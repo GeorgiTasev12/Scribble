@@ -1,6 +1,5 @@
 package com.georgitasev.scribble.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,18 +8,25 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Color(0xFF322B5C),
+    secondary = Color(0xFFAAA1DF),
+    onPrimary = Color(0xFFEBEAEA),
+    onSecondary = Color(0xFF212121),
+    primaryContainer = Color(0xFF3E24DB),
+    onPrimaryContainer = Color(0xFFF5F5F5)
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Color(0xFF7A6ADF),
+    secondary = Color(0xFF280AE5),
+    onPrimary = Color(0xFF161616),
+    onSecondary = Color(0xFFE5E5E5),
+    primaryContainer = Color(0xFFA69DDC),
+    onPrimaryContainer = Color(0xFF161616)
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
