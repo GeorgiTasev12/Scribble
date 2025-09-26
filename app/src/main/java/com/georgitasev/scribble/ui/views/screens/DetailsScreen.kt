@@ -1,0 +1,114 @@
+package com.georgitasev.scribble.ui.views.screens
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.georgitasev.scribble.ui.views.CoreScreen
+import com.georgitasev.scribble.viewmodels.DetailsViewModel
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailsScreen(
+    viewModel: DetailsViewModel = viewModel(),
+    navController: NavHostController
+) {
+    val colors = MaterialTheme.colorScheme
+
+    val title by viewModel.title.collectAsStateWithLifecycle()
+    val description by viewModel.description.collectAsStateWithLifecycle()
+
+    CoreScreen(
+        hasTopBar = true,
+        appBarTitle = "Details Screen",
+        onPopClick = { navController.popBackStack() },
+        isTitleEmpty = title.isEmpty(),
+        isDescriptionEmpty = description.isEmpty(),
+        body = { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    TextField(
+                        value = title,
+                        onValueChange = { viewModel.onTitleChange(it) },
+                        singleLine = true,
+                        shape = RectangleShape,
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = colors.primaryContainer,
+                            focusedContainerColor = colors.primaryContainer,
+                        ),
+                        textStyle = TextStyle(
+                            color = colors.onPrimaryContainer,
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.SansSerif
+                        ),
+                        placeholder = {
+                            Text(
+                                "Enter title here..",
+                                fontSize = 20.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    TextField(
+                        value = description,
+                        onValueChange = { viewModel.onDescriptionChange(it) },
+                        textStyle = TextStyle(
+                            color = colors.onPrimary,
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.SansSerif
+                        ),
+                        placeholder = {
+                            Text(
+                                "Enter description here..",
+                                color = colors.onPrimary,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            errorContainerColor = Color.Transparent
+                        ),
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+        }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDetailsScreen() {
+    DetailsScreen(navController = rememberNavController())
+}
