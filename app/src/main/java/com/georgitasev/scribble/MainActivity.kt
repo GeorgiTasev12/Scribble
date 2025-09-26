@@ -5,12 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.georgitasev.scribble.models.Routes
 import com.georgitasev.scribble.ui.theme.ScribbleTheme
+import com.georgitasev.scribble.ui.views.screens.DetailsScreen
 import com.georgitasev.scribble.ui.views.screens.MainScreen
 
 class MainActivity : ComponentActivity() {
@@ -26,13 +26,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ScribbleApp(navController: NavHostController = rememberNavController()) {
+fun ScribbleApp() {
+    val navController = rememberNavController()
+
     NavHost(
         navController = navController,
         startDestination = Routes.MAIN_SCREEN.name,
     ) {
         composable(route = Routes.MAIN_SCREEN.name) {
-            MainScreen()
+            MainScreen(navController = navController)
+        }
+        composable(route = Routes.DETAILS_SCREEN.name) {
+            DetailsScreen(navController = navController)
         }
     }
 }
