@@ -5,7 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,11 +25,14 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ListTileItem(
     title: String,
-    description: String = ""
+    description: String = "",
+    onEditClick: () -> Unit = {},
+    onDeleteButtonClick: () -> Unit = {},
 ) {
     Surface(
         shape = AbsoluteRoundedCornerShape(percent = 14),
-        color = MaterialTheme.colorScheme.surfaceContainer,
+        color = MaterialTheme.colorScheme.primaryContainer,
+        onClick = onEditClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 20.dp)
@@ -39,23 +47,37 @@ fun ListTileItem(
                     title,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = 18.sp,
-                    fontFamily = FontFamily.Monospace,
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    fontFamily = FontFamily.SansSerif,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                        .widthIn(max = 200.dp)
                 )
                 description.takeIf { it.isNotBlank() }?.let { text ->
                     Text(
                         text,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 12.sp,
-                        fontFamily = FontFamily.Monospace,
-                        maxLines = 2,
+                        fontFamily = FontFamily.SansSerif,
+                        maxLines = 3,
                         softWrap = true,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(vertical = 4.dp)
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                            .widthIn(max = 260.dp)
                     )
                 }
             }
-            ComboBoxMenu()
+            IconButton(
+                onClick = { onDeleteButtonClick() }
+            ) {
+                Icon(
+                    Icons.Rounded.Delete,
+                    contentDescription = "Remove note",
+                    tint = MaterialTheme.colorScheme.onErrorContainer
+                )
+            }
         }
     }
 }
