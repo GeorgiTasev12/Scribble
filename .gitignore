@@ -22,3 +22,7 @@ local.properties
 /.idea/misc.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/runConfigurations.xml
+/app/schemas/com.georgitasev.scribble.databases.database.AppDatabase/1.json
+/.kotlin/errors/errors-1759253597461.log
+/.kotlin/errors/errors-1759322031785.log
+/.kotlin/errors/errors-1759322359366.log

@@ -5,28 +5,44 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import androidx.room.Room
+import com.georgitasev.scribble.databases.database.AppDatabase
+import com.georgitasev.scribble.models.Constants
 import com.georgitasev.scribble.models.Routes
+import com.georgitasev.scribble.repositories.NoteRepository
 import com.georgitasev.scribble.ui.theme.ScribbleTheme
 import com.georgitasev.scribble.ui.views.screens.DetailsScreen
 import com.georgitasev.scribble.ui.views.screens.MainScreen
+import com.georgitasev.scribble.viewmodels.DetailsViewModel
+import com.georgitasev.scribble.viewmodels.MainViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            Constants.DATABASE_NAME
+        ).build()
+
         setContent {
             ScribbleTheme {
-                ScribbleApp()
+                ScribbleApp(db)
             }
         }
     }
 }
 
 @Composable
-fun ScribbleApp() {
+fun ScribbleApp(db: AppDatabase) {
     val navController = rememberNavController()
 
     NavHost(
@@ -34,10 +50,38 @@ fun ScribbleApp() {
         startDestination = Routes.MAIN_SCREEN.name,
     ) {
         composable(route = Routes.MAIN_SCREEN.name) {
-            MainScreen(navController = navController)
+            val repository = NoteRepository(appDB = db)
+            val viewModel = remember { MainViewModel(repo = repository) }
+
+            MainScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
         composable(route = Routes.DETAILS_SCREEN.name) {
-            DetailsScreen(navController = navController)
+            val repository = NoteRepository(appDB = db)
+            val viewModel = remember { DetailsViewModel(repo = repository) }
+
+            DetailsScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
+        composable(
+            route = "${Routes.DETAILS_SCREEN.name}/{noteId}",
+            arguments = listOf(navArgument("noteId") {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            val repository = NoteRepository(appDB = db)
+            val viewModel = remember { DetailsViewModel(repo = repository) }
+
+            val noteId = backStackEntry.arguments?.getInt("noteId") ?: 0
+            DetailsScreen(
+                navController = navController,
+                viewModel = viewModel,
+                noteId = noteId
+            )
         }
     }
 }
