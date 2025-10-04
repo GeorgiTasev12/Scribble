@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,17 +35,30 @@ import com.georgitasev.scribble.viewmodels.DetailsViewModel
 @Composable
 fun DetailsScreen(
     viewModel: DetailsViewModel = viewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    noteId: Int? = null
 ) {
     val colors = MaterialTheme.colorScheme
 
     val title by viewModel.title.collectAsStateWithLifecycle()
     val description by viewModel.description.collectAsStateWithLifecycle()
 
+    LaunchedEffect(noteId) {
+        noteId?.let { viewModel.loadNoteById(id = it) }
+    }
+
     CoreScreen(
         hasTopBar = true,
         appBarTitle = "Details Screen",
         onPopClick = { navController.popBackStack() },
+        onSaveNoteClick = {
+            noteId?.let { id ->
+                viewModel.updateNote(id, title, description)
+            } ?: run {
+                viewModel.createNote(title, description)
+            }
+            navController.popBackStack()
+        },
         isTitleEmpty = title.isEmpty(),
         isDescriptionEmpty = description.isEmpty(),
         body = { innerPadding ->
@@ -62,6 +78,9 @@ fun DetailsScreen(
                         colors = TextFieldDefaults.colors(
                             unfocusedContainerColor = colors.primaryContainer,
                             focusedContainerColor = colors.primaryContainer,
+                        ),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences
                         ),
                         textStyle = TextStyle(
                             color = colors.onPrimaryContainer,
@@ -84,6 +103,9 @@ fun DetailsScreen(
                             color = colors.onPrimary,
                             fontSize = 20.sp,
                             fontFamily = FontFamily.SansSerif
+                        ),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences
                         ),
                         placeholder = {
                             Text(
@@ -110,5 +132,8 @@ fun DetailsScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewDetailsScreen() {
-    DetailsScreen(navController = rememberNavController())
+    DetailsScreen(
+        navController = rememberNavController(),
+        noteId = 0
+    )
 }
