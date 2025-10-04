@@ -22,7 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import com.georgitasev.scribble.ui.views.composables.AlertDialog
+import com.georgitasev.scribble.ui.views.composables.DeleteAlertDialog
 
 @Composable
 fun MainScreen(
@@ -71,7 +71,7 @@ fun MainScreen(
                         )
 
                         if (openDialog.value) {
-                            AlertDialog(
+                            DeleteAlertDialog(
                                 dialogTitle = "Warning",
                                 dialogContent = "You're about to remove the note from your list. Once removed, it cannot be restored. Are you sure you want to proceed?",
                                 onConfirmation = {

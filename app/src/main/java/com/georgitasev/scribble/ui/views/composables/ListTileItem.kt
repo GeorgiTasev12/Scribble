@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
@@ -46,19 +47,25 @@ fun ListTileItem(
                     title,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = 18.sp,
-                    fontFamily = FontFamily.Monospace,
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    fontFamily = FontFamily.SansSerif,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                        .widthIn(max = 200.dp)
                 )
                 description.takeIf { it.isNotBlank() }?.let { text ->
                     Text(
                         text,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 12.sp,
-                        fontFamily = FontFamily.Monospace,
-                        maxLines = 2,
+                        fontFamily = FontFamily.SansSerif,
+                        maxLines = 3,
                         softWrap = true,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(vertical = 4.dp)
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                            .widthIn(max = 260.dp)
                     )
                 }
             }

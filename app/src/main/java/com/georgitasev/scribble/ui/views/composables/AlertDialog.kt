@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlertDialog(
+fun DeleteAlertDialog(
     dialogTitle: String,
     dialogContent: String,
     onDismissRequest: () -> Unit,
@@ -25,7 +25,7 @@ fun AlertDialog(
             Icon(
                 Icons.Default.Warning,
                 contentDescription = "Warning icon for alert dialog",
-                tint = MaterialTheme.colorScheme.onError,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         },
         containerColor = colors.primaryContainer,
