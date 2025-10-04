@@ -55,7 +55,15 @@ fun ListTileItem(
                     )
                 }
             }
-            ComboBoxMenu()
+            IconButton(
+                onClick = { onDeleteButtonClick() }
+            ) {
+                Icon(
+                    Icons.Rounded.Delete,
+                    contentDescription = "Remove note",
+                    tint = MaterialTheme.colorScheme.onErrorContainer
+                )
+            }
         }
     }
 }
