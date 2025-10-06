@@ -9,16 +9,19 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -69,8 +72,14 @@ fun ListTileItem(
                     )
                 }
             }
-            IconButton(
-                onClick = { onDeleteButtonClick() }
+            FilledIconButton(
+                onClick = { onDeleteButtonClick() },
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer,
+                    contentColor = Color.White,
+                    disabledContainerColor = Color.Gray,
+                    disabledContentColor = Color.LightGray
+                )
             ) {
                 Icon(
                     Icons.Rounded.Delete,
@@ -80,4 +89,13 @@ fun ListTileItem(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewListTile() {
+    ListTileItem(
+        title = "Test",
+        description = "asdasdasd"
+    )
 }
