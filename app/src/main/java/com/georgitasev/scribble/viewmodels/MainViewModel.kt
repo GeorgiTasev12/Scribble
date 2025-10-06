@@ -12,15 +12,22 @@ class MainViewModel(private val repo: NoteRepository): ViewModel() {
     private val _notes = MutableStateFlow<List<Note>>(emptyList())
     val notes: StateFlow<List<Note>> = _notes
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     init {
         viewModelScope.launch {
+            _isLoading.value = true
             repo.readNotes().collect { list ->
                 _notes.value = list
+                _isLoading.value = false
             }
         }
     }
 
     fun removeNote(id: Int) = viewModelScope.launch {
+        _isLoading.value = true
         repo.removeNote(id = id)
+        _isLoading.value = false
     }
 }
