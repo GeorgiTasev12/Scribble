@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ fun MainScreen(
     navController: NavHostController
 ) {
     val notesList = viewModel.notes.collectAsState().value
+    val isLoading = viewModel.isLoading.collectAsState().value
     val openDialog = remember { mutableStateOf(false) }
 
     CoreScreen(
@@ -38,50 +40,64 @@ fun MainScreen(
             navController.navigate(Routes.DETAILS_SCREEN.name)
         },
         body = { innerPadding ->
-            if (notesList.isEmpty()) {
-                Column(
-                    Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        "Notes are empty, please add some notes",
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
+            when {
+                isLoading -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    ) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .padding(
-                            horizontal = 12.dp,
-                            vertical = 10.dp
+                notesList.isEmpty() -> {
+                    Column(
+                        Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            "Notes are empty, please add some notes",
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
-                ) {
-                    items(count = notesList.size) { id ->
-                        ListTileItem(
-                            title = notesList[id].title,
-                            description = notesList[id].description,
-                            onEditClick = {
-                                navController.navigate("${Routes.DETAILS_SCREEN.name}/${notesList[id].id}")
-                            },
-                            onDeleteButtonClick = {
-                                openDialog.value = true
-                            }
-                        )
-
-                        if (openDialog.value) {
-                            DeleteAlertDialog(
-                                dialogTitle = "Warning",
-                                dialogContent = "You're about to remove the note from your list. Once removed, it cannot be restored. Are you sure you want to proceed?",
-                                onConfirmation = {
-                                    viewModel.removeNote(id = notesList[id].id)
-                                    openDialog.value = false
+                    }
+                }
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .padding(
+                                horizontal = 12.dp,
+                                vertical = 10.dp
+                            )
+                    ) {
+                        items(count = notesList.size) { id ->
+                            ListTileItem(
+                                title = notesList[id].title,
+                                description = notesList[id].description,
+                                onEditClick = {
+                                    navController.navigate("${Routes.DETAILS_SCREEN.name}/${notesList[id].id}")
                                 },
-                                onDismissRequest = {
-                                    openDialog.value = false
+                                onDeleteButtonClick = {
+                                    openDialog.value = true
                                 }
                             )
+
+                            if (openDialog.value) {
+                                DeleteAlertDialog(
+                                    dialogTitle = "Warning",
+                                    dialogContent = "You're about to remove the note from your list. Once removed, it cannot be restored. Are you sure you want to proceed?",
+                                    onConfirmation = {
+                                        viewModel.removeNote(id = notesList[id].id)
+                                        openDialog.value = false
+                                    },
+                                    onDismissRequest = {
+                                        openDialog.value = false
+                                    }
+                                )
+                            }
                         }
                     }
                 }
