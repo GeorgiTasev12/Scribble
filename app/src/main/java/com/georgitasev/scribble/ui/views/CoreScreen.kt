@@ -33,6 +33,7 @@ fun CoreScreen(
     onPopClick: () -> Unit = {},
     onFABClick: () -> Unit = {},
     onSaveNoteClick: () -> Unit = {},
+    onSaveFileClick: () -> Unit = {}
 ) {
     val colors = MaterialTheme.colorScheme
 
@@ -63,7 +64,27 @@ fun CoreScreen(
                         } else null
                     },
                     actions = {
-                        IconButton(onClick = onSaveNoteClick) {
+                        IconButton(
+                            onClick = onSaveFileClick,
+                            enabled = !isTitleEmpty
+                        ) {
+                            Icon(
+                                painterResource(R.drawable.save_file),
+                                contentDescription = "Save",
+                                tint = if (!isTitleEmpty && !isDescriptionEmpty)
+                                    colors.onPrimaryContainer.copy(alpha = 20f)
+                                else
+                                    colors.onPrimaryContainer,
+                                modifier = Modifier.size(
+                                    width = 25.dp,
+                                    height = 25.dp
+                                )
+                            )
+                        }
+                        IconButton(
+                            onClick = onSaveNoteClick,
+                            enabled = !isTitleEmpty
+                        ) {
                             Icon(
                                 Icons.Default.CheckCircle,
                                 contentDescription = "Save",
