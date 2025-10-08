@@ -23,7 +23,7 @@ class DetailsViewModel(private val repo: NoteRepository) : ViewModel() {
         title: String,
         description: String
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.createNote(
                 Note(
                     title = title,
@@ -38,7 +38,7 @@ class DetailsViewModel(private val repo: NoteRepository) : ViewModel() {
         title: String,
         description: String
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.updateNote(
                 Note(
                     id = id,
@@ -50,7 +50,7 @@ class DetailsViewModel(private val repo: NoteRepository) : ViewModel() {
     }
 
     fun loadNoteById(id: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val note = repo.getNoteById(id)
             note?.let { note ->
                 _title.value = note.title
