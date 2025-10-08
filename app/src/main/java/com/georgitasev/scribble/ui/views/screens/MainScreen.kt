@@ -32,7 +32,9 @@ fun MainScreen(
 ) {
     val notesList = viewModel.notes.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
+
     val openDialog = remember { mutableStateOf(false) }
+    val noteToDelete = remember { mutableStateOf<Int?>(null) }
 
     CoreScreen(
         hasFAB = true,
@@ -73,32 +75,37 @@ fun MainScreen(
                                 vertical = 10.dp
                             )
                     ) {
-                        items(count = notesList.size) { id ->
+                        items(count = notesList.size) { index ->
+                            val note = notesList[index]
+
                             ListTileItem(
-                                title = notesList[id].title,
-                                description = notesList[id].description,
+                                title = note.title,
+                                description = note.description,
                                 onEditClick = {
-                                    navController.navigate("${Routes.DETAILS_SCREEN.name}/${notesList[id].id}")
+                                    navController.navigate("${Routes.DETAILS_SCREEN.name}/${note.id}")
                                 },
                                 onDeleteButtonClick = {
+                                    noteToDelete.value = note.id
                                     openDialog.value = true
                                 }
                             )
-
-                            if (openDialog.value) {
-                                DeleteAlertDialog(
-                                    dialogTitle = "Warning",
-                                    dialogContent = "You're about to remove the note from your list. Once removed, it cannot be restored. Are you sure you want to proceed?",
-                                    onConfirmation = {
-                                        viewModel.removeNote(id = notesList[id].id)
-                                        openDialog.value = false
-                                    },
-                                    onDismissRequest = {
-                                        openDialog.value = false
-                                    }
-                                )
-                            }
                         }
+                    }
+
+                    if (openDialog.value && noteToDelete.value != null) {
+                        DeleteAlertDialog(
+                            dialogTitle = "Warning",
+                            dialogContent = "You're about to remove the note from your list. Once removed, it cannot be restored. Are you sure you want to proceed?",
+                            onConfirmation = {
+                                viewModel.removeNote(id = noteToDelete.value!!)
+                                openDialog.value = false
+                                noteToDelete.value = null
+                            },
+                            onDismissRequest = {
+                                openDialog.value = false
+                                noteToDelete.value = null
+                            }
+                        )
                     }
                 }
             }
