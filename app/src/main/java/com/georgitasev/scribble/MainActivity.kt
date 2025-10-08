@@ -11,11 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.room.Room
-import com.georgitasev.scribble.databases.database.AppDatabase
-import com.georgitasev.scribble.models.Constants
 import com.georgitasev.scribble.models.Routes
-import com.georgitasev.scribble.repositories.NoteRepository
 import com.georgitasev.scribble.ui.theme.ScribbleTheme
 import com.georgitasev.scribble.ui.views.screens.DetailsScreen
 import com.georgitasev.scribble.ui.views.screens.MainScreen
@@ -25,24 +21,20 @@ import com.georgitasev.scribble.viewmodels.MainViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val app = application as ScribbleApplication
+
         enableEdgeToEdge()
-
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            Constants.DATABASE_NAME
-        ).build()
-
         setContent {
             ScribbleTheme {
-                ScribbleApp(db)
+                ScribbleApp(application = app)
             }
         }
     }
 }
 
 @Composable
-fun ScribbleApp(db: AppDatabase) {
+fun ScribbleApp(application: ScribbleApplication) {
     val navController = rememberNavController()
 
     NavHost(
@@ -50,8 +42,7 @@ fun ScribbleApp(db: AppDatabase) {
         startDestination = Routes.MAIN_SCREEN.name,
     ) {
         composable(route = Routes.MAIN_SCREEN.name) {
-            val repository = NoteRepository(appDB = db)
-            val viewModel = remember { MainViewModel(repo = repository) }
+            val viewModel = remember { MainViewModel(repo = application.repository) }
 
             MainScreen(
                 navController = navController,
@@ -59,8 +50,7 @@ fun ScribbleApp(db: AppDatabase) {
             )
         }
         composable(route = Routes.DETAILS_SCREEN.name) {
-            val repository = NoteRepository(appDB = db)
-            val viewModel = remember { DetailsViewModel(repo = repository) }
+            val viewModel = remember { DetailsViewModel(repo = application.repository) }
 
             DetailsScreen(
                 navController = navController,
@@ -73,8 +63,7 @@ fun ScribbleApp(db: AppDatabase) {
                 type = NavType.IntType
             })
         ) { backStackEntry ->
-            val repository = NoteRepository(appDB = db)
-            val viewModel = remember { DetailsViewModel(repo = repository) }
+            val viewModel = remember { DetailsViewModel(repo = application.repository) }
 
             val noteId = backStackEntry.arguments?.getInt("noteId") ?: 0
             DetailsScreen(
