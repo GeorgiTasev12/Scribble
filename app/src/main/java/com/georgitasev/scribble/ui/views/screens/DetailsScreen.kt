@@ -1,5 +1,8 @@
 package com.georgitasev.scribble.ui.views.screens
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -39,9 +43,22 @@ fun DetailsScreen(
     noteId: Int? = null
 ) {
     val colors = MaterialTheme.colorScheme
+    val context = LocalContext.current
 
     val title by viewModel.title.collectAsStateWithLifecycle()
     val description by viewModel.description.collectAsStateWithLifecycle()
+
+    val createDocumentLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/plain")
+    ) { uri: Uri? ->
+        uri?.let {
+            viewModel.saveFileToUri(
+                context = context,
+                uri = it,
+                content = description
+            )
+        }
+    }
 
     LaunchedEffect(noteId) {
         noteId?.let { viewModel.loadNoteById(id = it) }
@@ -58,6 +75,10 @@ fun DetailsScreen(
                 viewModel.createNote(title, description)
             }
             navController.popBackStack()
+        },
+        onSaveFileClick = {
+            val suggestedName = "${title.ifBlank { "Untitled" }}.txt"
+            createDocumentLauncher.launch(suggestedName)
         },
         isTitleEmpty = title.isEmpty(),
         isDescriptionEmpty = description.isEmpty(),

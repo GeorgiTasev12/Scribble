@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -33,6 +33,7 @@ fun CoreScreen(
     onPopClick: () -> Unit = {},
     onFABClick: () -> Unit = {},
     onSaveNoteClick: () -> Unit = {},
+    onSaveFileClick: () -> Unit = {}
 ) {
     val colors = MaterialTheme.colorScheme
 
@@ -63,9 +64,29 @@ fun CoreScreen(
                         } else null
                     },
                     actions = {
-                        IconButton(onClick = onSaveNoteClick) {
+                        IconButton(
+                            onClick = onSaveFileClick,
+                            enabled = !isTitleEmpty
+                        ) {
                             Icon(
-                                Icons.Default.CheckCircle,
+                                painterResource(R.drawable.save_file),
+                                contentDescription = "Save",
+                                tint = if (!isTitleEmpty && !isDescriptionEmpty)
+                                    colors.onPrimaryContainer.copy(alpha = 20f)
+                                else
+                                    colors.onPrimaryContainer,
+                                modifier = Modifier.size(
+                                    width = 25.dp,
+                                    height = 25.dp
+                                )
+                            )
+                        }
+                        IconButton(
+                            onClick = onSaveNoteClick,
+                            enabled = !isTitleEmpty
+                        ) {
+                            Icon(
+                                Icons.Default.Check,
                                 contentDescription = "Save",
                                 tint = if (isTitleEmpty && isDescriptionEmpty)
                                     colors.onPrimaryContainer.copy(alpha = 20f)
