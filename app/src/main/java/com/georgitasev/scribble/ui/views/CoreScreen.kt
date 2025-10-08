@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -86,7 +86,7 @@ fun CoreScreen(
                             enabled = !isTitleEmpty
                         ) {
                             Icon(
-                                Icons.Default.CheckCircle,
+                                Icons.Default.Check,
                                 contentDescription = "Save",
                                 tint = if (isTitleEmpty && isDescriptionEmpty)
                                     colors.onPrimaryContainer.copy(alpha = 20f)
