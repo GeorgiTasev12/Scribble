@@ -9,10 +9,18 @@ workflows:
       vars:
         PACKAGE_NAME: "com.georgitasev.scribble"
     scripts:
+      - name: Decode keystore
+        script: |
+          echo "$CM_KEYSTORE" | base64 --decode > $CM_KEYSTORE_PATH
       - name: Make gradlew executable
         script: chmod +x ./gradlew
       - name: Build release APK/AAB
-        script: ./gradlew clean assembleRelease
+        script: |
+          ./gradlew clean assembleRelease \
+            -Pandroid.injected.signing.store.file=$CM_KEYSTORE_PATH \
+            -Pandroid.injected.signing.store.password=$CM_KEYSTORE_PASSWORD \
+            -Pandroid.injected.signing.key.alias=$CM_KEY_ALIAS \
+            -Pandroid.injected.signing.key.password=$CM_KEY_PASSWORD
     artifacts:
       - app/build/outputs/**/*.apk
       - app/build/outputs/**/*.aab
