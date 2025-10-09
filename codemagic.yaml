@@ -1,15 +1,13 @@
 workflows:
-  android-compose:
+  compose-release:
     name: Android Compose Build
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
+      groups:
+        - android_signing
       vars:
-        CI: true
-        KEYSTORE_BASE64: $KEYSTORE_BASE64
-        KEYSTORE_PASSWORD: $KEYSTORE_PASSWORD
-        KEY_ALIAS: $KEY_ALIAS
-        KEY_PASSWORD: $KEY_PASSWORD
+        PACKAGE_NAME: "com.georgitasev.scribble"
     scripts:
       - name: Make gradlew executable
         script: chmod +x ./gradlew
