@@ -2,7 +2,7 @@ workflows:
   android-compose:
     name: Android Compose Build
     max_build_duration: 120
-    instance_type: linux
+    instance_type: mac_mini_m2
     environment:
       vars:
         CI: true
@@ -14,7 +14,7 @@ workflows:
       - name: Decode keystore
         script: |
           echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
-      - name: Build APK / AAB
+      - name: Build release APK/AAB
         script: ./gradlew clean assembleRelease
     artifacts:
       - app/build/outputs/**/*.apk
