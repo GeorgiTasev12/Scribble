@@ -1,31 +1,19 @@
 workflows:
   android:
-    name: Android Build
+    name: Android Compose Build
     max_build_duration: 60
-    instance_type: linux-small # for Android builds
+    instance_type: linux       # <-- must be exactly 'linux'
     environment:
       vars:
-        # You can set these in the UI too, for keystore etc.
         KEYSTORE_BASE64: $CM_KEYSTORE_BASE64
         KEYSTORE_PASSWORD: $CM_KEYSTORE_PASSWORD
         KEY_ALIAS: $CM_KEY_ALIAS
         KEY_PASSWORD: $CM_KEY_PASSWORD
-      groups:
-        - android_signing   # if you group your keystore & secrets in UI
     cache:
       cache_paths:
         - ~/.gradle
         - ~/.gradle/caches
         - ~/.gradle/wrapper
-    triggering:
-      events:
-        - push
-        - pull_request
-      branch_patterns:
-        - pattern: '*'   # build all branches
-          include: true
-          source: true
-      cancel_previous_builds: true
     scripts:
       - name: Decode keystore
         script: |
@@ -33,16 +21,7 @@ workflows:
             echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
           fi
       - name: Build APK / AAB
-        script: |
-          ./gradlew clean assembleRelease
+        script: ./gradlew clean assembleRelease
     artifacts:
       - app/build/outputs/**/*.apk
       - app/build/outputs/**/*.aab
-    publishing:
-      # optional: you can add Google Play publishing here later
-      email:
-        recipients:
-          - your.email@example.com
-        notify:
-          success: true
-          failure: true
