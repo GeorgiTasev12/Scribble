@@ -11,9 +11,6 @@ workflows:
         KEY_ALIAS: $KEY_ALIAS
         KEY_PASSWORD: $KEY_PASSWORD
     scripts:
-      - name: Decode keystore
-        script: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
       - name: Build release APK/AAB
         script: ./gradlew clean assembleRelease
     artifacts:
