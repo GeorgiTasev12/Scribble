@@ -11,6 +11,8 @@ workflows:
         KEY_ALIAS: $KEY_ALIAS
         KEY_PASSWORD: $KEY_PASSWORD
     scripts:
+      - name: Make gradlew executable
+        script: chmod +x ./gradlew
       - name: Build release APK/AAB
         script: ./gradlew clean assembleRelease
     artifacts:
