@@ -1,3 +1,14 @@
+import java.util.Properties
+
+val keystoreProperties = Properties().apply {
+    val file = rootProject.file("key.properties")
+    if (file.exists()) {
+        load(file.reader())
+    } else {
+        println("The key.properties not found! Using Codemagic environment variables if available.")
+    }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,17 +20,40 @@ android {
     namespace = "com.georgitasev.scribble"
     compileSdk = 36
 
+    val appVersionCode = (System.getenv()["NEW_BUILD_NUMBER"] ?: "1").toInt()
+
     defaultConfig {
         applicationId = "com.georgitasev.scribble"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
+        versionCode = appVersionCode
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            if (System.getenv()["CI"].toBoolean()) { // CI=true is exported by Codemagic
+                storeFile = System.getenv()["CM_KEYSTORE_PATH"]?.let { file(it) }
+                storePassword = System.getenv()["CM_KEYSTORE_PASSWORD"]
+                keyAlias = System.getenv()["CM_KEY_ALIAS"]
+                keyPassword = System.getenv()["CM_KEY_PASSWORD"]
+            } else {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
