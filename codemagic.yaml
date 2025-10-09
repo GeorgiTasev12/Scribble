@@ -1,27 +1,13 @@
 workflows:
-  android:
+  sample-workflow:
     name: Android Compose Build
-    max_build_duration: 60
-    instance_type: linux       # <-- must be exactly 'linux'
+    max_build_duration: 120
+    instance_type: mac_mini_m2
     environment:
+      android_signing:
+        - keystore_reference
       vars:
-        KEYSTORE_BASE64: $CM_KEYSTORE_BASE64
-        KEYSTORE_PASSWORD: $CM_KEYSTORE_PASSWORD
-        KEY_ALIAS: $CM_KEY_ALIAS
-        KEY_PASSWORD: $CM_KEY_PASSWORD
-    cache:
-      cache_paths:
-        - ~/.gradle
-        - ~/.gradle/caches
-        - ~/.gradle/wrapper
-    scripts:
-      - name: Decode keystore
-        script: |
-          if [ -n "$KEYSTORE_BASE64" ]; then
-            echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
-          fi
-      - name: Build APK / AAB
-        script: ./gradlew clean assembleRelease
+        PACKAGE_NAME: "com.georgitasev.scribble"
     artifacts:
-      - app/build/outputs/**/*.apk
-      - app/build/outputs/**/*.aab
+          - app/build/outputs/**/*.apk
+          - app/build/outputs/**/*.aab
