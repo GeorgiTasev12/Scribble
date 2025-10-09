@@ -11,13 +11,14 @@ workflows:
     scripts:
       - name: Decode keystore
         script: |
-          echo "$CM_KEYSTORE" | base64 --decode > $CM_KEYSTORE_PATH
+          echo "$CM_KEYSTORE" | base64 --decode > keystore.jks
+          export CM_KEYSTORE_PATH=$PWD/keystore.jks
       - name: Make gradlew executable
         script: chmod +x ./gradlew
       - name: Build release APK/AAB
         script: |
           ./gradlew clean assembleRelease \
-            -Pandroid.injected.signing.store.file=$CM_KEYSTORE_PATH \
+            -Pandroid.injected.signing.store.file=codemagic.keystore \
             -Pandroid.injected.signing.store.password=$CM_KEYSTORE_PASSWORD \
             -Pandroid.injected.signing.key.alias=$CM_KEY_ALIAS \
             -Pandroid.injected.signing.key.password=$CM_KEY_PASSWORD
