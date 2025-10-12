@@ -11,12 +11,16 @@ workflows:
         CI: "true"
     scripts:
       - name: Set Android SDK location
-        script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+        script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+
+      - name: Decode keystore
+        script: echo "$CM_KEYSTORE" | base64 --decode > codemagic.keystore
+
       - name: Build Android release
         script: |
           ./gradlew bundleRelease
           ./gradlew assembleRelease
+
     artifacts:
       - app/build/outputs/**/*.aab
       - app/build/outputs/**/*.apk
