@@ -20,6 +20,13 @@ workflows:
         script: |
           ./gradlew bundleRelease
           ./gradlew assembleRelease
+          
+      - name: Debug signing variables
+        script: |
+          echo "CI: $CI"
+          echo "CM_KEYSTORE_PASSWORD: $CM_KEYSTORE_PASSWORD"
+          echo "CM_KEY_ALIAS: $CM_KEY_ALIAS"
+          echo "CM_KEY_PASSWORD: $CM_KEY_PASSWORD"
 
     artifacts:
       - app/build/outputs/**/*.aab
