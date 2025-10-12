@@ -11,8 +11,8 @@ workflows:
     scripts:
       - name: Decode keystore
         script: |
-          echo "$CM_KEYSTORE" | base64 --decode > keystore.jks
-          export CM_KEYSTORE_PATH=$PWD/keystore.jks
+          echo "$CM_KEYSTORE" | base64 --decode > codemagic.keystore
+          export CM_KEYSTORE_PATH=$PWD/codemagic.keystore
       - name: Make gradlew executable
         script: chmod +x ./gradlew
       - name: Build release APK/AAB

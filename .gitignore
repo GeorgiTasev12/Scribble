@@ -32,3 +32,4 @@ local.properties
 /key.properties
 /codemagic.keystore.base64
 /codemagic.keystore
+/app/codemagic.keystore.old
