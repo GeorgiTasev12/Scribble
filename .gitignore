@@ -27,6 +27,9 @@ local.properties
 /.kotlin/errors/errors-1759322031785.log
 /.kotlin/errors/errors-1759322359366.log
 /.idea/kotlinc.xml
-/codemagic.keystore
+/app/codemagic.keystore
 /codemagic.keystore.old
 /key.properties
+/codemagic.keystore.base64
+/codemagic.keystore
+/app/codemagic.keystore.old
