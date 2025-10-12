@@ -39,11 +39,17 @@ android {
                 storePassword = System.getenv()["CM_KEYSTORE_PASSWORD"]
                 keyAlias = System.getenv()["CM_KEY_ALIAS"]
                 keyPassword = System.getenv()["CM_KEY_PASSWORD"]
+
+                println("CI storePassword: ${System.getenv()["CM_KEYSTORE_PASSWORD"]}")
+                println("CI boolean: ${System.getenv()["CI"]}")
             } else {
                 storeFile = file(keystoreProperties.getProperty("storeFile"))
                 storePassword = keystoreProperties.getProperty("storePassword")
                 keyAlias = keystoreProperties.getProperty("keyAlias")
                 keyPassword = keystoreProperties.getProperty("keyPassword")
+
+                println("CI storePassword: ${System.getenv()["CM_KEYSTORE_PASSWORD"]}")
+                println("CI boolean: ${System.getenv()["CI"]}")
             }
         }
     }

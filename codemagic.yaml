@@ -9,7 +9,7 @@ workflows:
         - android_signing
       vars:
         PACKAGE_NAME: "com.georgitasev.scribble"
-        CI: "true" # Ensures your Gradle script uses CI-specific signing logic
+        CI: "true"
 
     scripts:
       - name: Decode keystore
