@@ -3,23 +3,25 @@ workflows:
     name: Android Compose Build
     max_build_duration: 120
     instance_type: mac_mini_m2
+
     environment:
-      android_signing:
-        - keystore_reference
+      groups:
+        - android_signing
       vars:
         PACKAGE_NAME: "com.georgitasev.scribble"
+        CI: "true" # Ensures your Gradle script uses CI-specific signing logic
+
     scripts:
       - name: Decode keystore
         script: |
           echo "$CM_KEYSTORE" | base64 --decode > codemagic.keystore
-          export CM_KEYSTORE_PATH=$PWD/codemagic.keystore
+
       - name: Make gradlew executable
         script: chmod +x ./gradlew
-      - name: Set Android SDK location
-        script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
-           - name: Android Compose Build
+
       - name: Build release APK/AAB
         script: ./gradlew clean assembleRelease
+
     artifacts:
       - app/build/outputs/**/*.apk
+      - app/build/outputs/**/*.aab
