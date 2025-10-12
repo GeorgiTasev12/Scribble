@@ -19,7 +19,7 @@ workflows:
         script: |
           ./gradlew clean assembleRelease \
             -Pandroid.injected.signing.store.file=codemagic.keystore \
-            -Pandroid.injected.signing.store.password=$CM_KEYSTORE_PASSWORD \
+            -Pandroid.injected.signing.store.password=$CM_KEY_PASSWORD \
             -Pandroid.injected.signing.key.alias=$CM_KEY_ALIAS \
             -Pandroid.injected.signing.key.password=$CM_KEY_PASSWORD
     artifacts:
