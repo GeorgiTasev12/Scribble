@@ -4,8 +4,8 @@ workflows:
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
-      groups:
-        - android_signing
+      android_signing:
+        - keystore_reference
       vars:
         PACKAGE_NAME: "com.georgitasev.scribble"
     scripts:
@@ -15,8 +15,11 @@ workflows:
           export CM_KEYSTORE_PATH=$PWD/codemagic.keystore
       - name: Make gradlew executable
         script: chmod +x ./gradlew
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+           - name: Android Compose Build
       - name: Build release APK/AAB
         script: ./gradlew clean assembleRelease
     artifacts:
       - app/build/outputs/**/*.apk
-      - app/build/outputs/**/*.aab
