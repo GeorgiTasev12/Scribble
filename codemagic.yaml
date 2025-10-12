@@ -16,12 +16,7 @@ workflows:
       - name: Make gradlew executable
         script: chmod +x ./gradlew
       - name: Build release APK/AAB
-        script: |
-          ./gradlew clean assembleRelease \
-            -Pandroid.injected.signing.store.file=codemagic.keystore \
-            -Pandroid.injected.signing.store.password=$CM_KEY_PASSWORD \
-            -Pandroid.injected.signing.key.alias=$CM_KEY_ALIAS \
-            -Pandroid.injected.signing.key.password=$CM_KEY_PASSWORD
+        script: ./gradlew clean assembleRelease
     artifacts:
       - app/build/outputs/**/*.apk
       - app/build/outputs/**/*.aab
