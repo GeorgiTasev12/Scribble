@@ -73,8 +73,9 @@ fun MainScreen(
                         modifier = Modifier
                             .padding(innerPadding)
                             .padding(
-                                horizontal = 12.dp,
-                                vertical = 10.dp
+                                start = 12.dp,
+                                end = 12.dp,
+                                top = 40.dp
                             )
                     ) {
                         items(count = notesList.size) { index ->
