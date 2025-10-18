@@ -55,7 +55,7 @@ fun ListTileItem(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .padding(vertical = 4.dp)
-                        .widthIn(max = 200.dp)
+                        .widthIn(max = 300.dp)
                 )
                 description.takeIf { it.isNotBlank() }?.let { text ->
                     Text(
