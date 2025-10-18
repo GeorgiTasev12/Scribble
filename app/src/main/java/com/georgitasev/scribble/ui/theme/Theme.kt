@@ -12,38 +12,31 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF322B5C),
+    primary = Color(0xFFAAB5F5),
+    inversePrimary = Color(0xFF262C3D),
     secondary = Color(0xFFAAA1DF),
     onPrimary = Color(0xFFEBEAEA),
     onSecondary = Color(0xFF212121),
-    primaryContainer = Color(0xFF3E24DB),
-    onPrimaryContainer = Color(0xFFF5F5F5)
+    primaryContainer = Color(0xFF474F81),
+    onPrimaryContainer = Color(0xFFF5F5F5),
+    errorContainer = Color(0xFF877E98)
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF7A6ADF),
+    primary = Color(0xFF4574EC),
+    inversePrimary = Color(0xFFCFD8EF),
     secondary = Color(0xFF280AE5),
     onPrimary = Color(0xFF161616),
     onSecondary = Color(0xFFE5E5E5),
-    primaryContainer = Color(0xFFA69DDC),
+    primaryContainer = Color(0xB3AEB4C7),
     onPrimaryContainer = Color(0xFF161616)
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
 )
 
 @Composable
 fun ScribbleTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

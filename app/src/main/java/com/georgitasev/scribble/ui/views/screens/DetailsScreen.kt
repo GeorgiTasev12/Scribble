@@ -99,6 +99,7 @@ fun DetailsScreen(
                         colors = TextFieldDefaults.colors(
                             unfocusedContainerColor = colors.primaryContainer,
                             focusedContainerColor = colors.primaryContainer,
+                            cursorColor = colors.onPrimary
                         ),
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Sentences
@@ -140,7 +141,8 @@ fun DetailsScreen(
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent,
                             disabledContainerColor = Color.Transparent,
-                            errorContainerColor = Color.Transparent
+                            errorContainerColor = Color.Transparent,
+                            cursorColor = colors.onPrimaryContainer
                         ),
                         modifier = Modifier.fillMaxSize()
                     )

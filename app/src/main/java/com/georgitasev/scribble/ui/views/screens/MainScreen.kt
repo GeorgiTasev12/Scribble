@@ -36,6 +36,8 @@ fun MainScreen(
     val openDialog = remember { mutableStateOf(false) }
     val noteToDelete = remember { mutableStateOf<Int?>(null) }
 
+    val color = MaterialTheme.colorScheme
+
     CoreScreen(
         hasFAB = true,
         onFABClick = {
@@ -50,7 +52,7 @@ fun MainScreen(
                             .padding(innerPadding)
                     ) {
                         CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary
+                            color = color.inversePrimary
                         )
                     }
                 }
@@ -62,7 +64,7 @@ fun MainScreen(
                     ) {
                         Text(
                             "Notes are empty, please add some notes",
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = color.onPrimary
                         )
                     }
                 }
@@ -71,8 +73,9 @@ fun MainScreen(
                         modifier = Modifier
                             .padding(innerPadding)
                             .padding(
-                                horizontal = 12.dp,
-                                vertical = 10.dp
+                                start = 12.dp,
+                                end = 12.dp,
+                                top = 40.dp
                             )
                     ) {
                         items(count = notesList.size) { index ->
