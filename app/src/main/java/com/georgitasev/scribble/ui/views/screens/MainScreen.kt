@@ -50,7 +50,7 @@ fun MainScreen(
                             .padding(innerPadding)
                     ) {
                         CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary
+                            color = color.inversePrimary
                         )
                     }
                 }

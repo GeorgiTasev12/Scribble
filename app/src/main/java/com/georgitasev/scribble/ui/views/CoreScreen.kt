@@ -39,7 +39,7 @@ fun CoreScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.primary,
+        containerColor = colors.inversePrimary,
         topBar = {
             if (hasTopBar) {
                 TopAppBar(
