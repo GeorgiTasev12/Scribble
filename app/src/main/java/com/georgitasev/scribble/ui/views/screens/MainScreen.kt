@@ -36,6 +36,8 @@ fun MainScreen(
     val openDialog = remember { mutableStateOf(false) }
     val noteToDelete = remember { mutableStateOf<Int?>(null) }
 
+    val color = MaterialTheme.colorScheme
+
     CoreScreen(
         hasFAB = true,
         onFABClick = {
@@ -62,7 +64,7 @@ fun MainScreen(
                     ) {
                         Text(
                             "Notes are empty, please add some notes",
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = color.onPrimary
                         )
                     }
                 }

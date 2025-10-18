@@ -101,13 +101,13 @@ fun CoreScreen(
         floatingActionButton = {
             if (hasFAB) {
                 FloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = colors.primaryContainer,
                     onClick = onFABClick
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.note_add),
                         contentDescription = "Add a note.",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        tint = colors.onPrimaryContainer,
                         modifier = Modifier.size(size = 30.dp)
                     )
                 }
