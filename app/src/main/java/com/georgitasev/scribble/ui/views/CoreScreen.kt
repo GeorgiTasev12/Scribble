@@ -28,8 +28,6 @@ fun CoreScreen(
     hasFAB: Boolean = false,
     hasTopBar: Boolean = false,
     appBarTitle: String = "",
-    isTitleEmpty: Boolean = false,
-    isDescriptionEmpty: Boolean = false,
     onPopClick: () -> Unit = {},
     onFABClick: () -> Unit = {},
     onSaveNoteClick: () -> Unit = {},
@@ -66,15 +64,11 @@ fun CoreScreen(
                     actions = {
                         IconButton(
                             onClick = onSaveFileClick,
-                            enabled = !isTitleEmpty
                         ) {
                             Icon(
                                 painterResource(R.drawable.save_file),
                                 contentDescription = "Save",
-                                tint = if (!isTitleEmpty && !isDescriptionEmpty)
-                                    colors.onPrimaryContainer.copy(alpha = 20f)
-                                else
-                                    colors.onPrimaryContainer,
+                                tint = colors.onPrimaryContainer,
                                 modifier = Modifier.size(
                                     width = 25.dp,
                                     height = 25.dp
@@ -83,15 +77,11 @@ fun CoreScreen(
                         }
                         IconButton(
                             onClick = onSaveNoteClick,
-                            enabled = !isTitleEmpty
                         ) {
                             Icon(
                                 Icons.Default.Check,
                                 contentDescription = "Save",
-                                tint = if (isTitleEmpty && isDescriptionEmpty)
-                                    colors.onPrimaryContainer.copy(alpha = 20f)
-                                else
-                                    colors.onPrimaryContainer
+                                tint = colors.onPrimaryContainer
                             )
                         }
                     }
