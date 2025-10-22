@@ -80,8 +80,6 @@ fun DetailsScreen(
             val suggestedName = "${title.ifBlank { "Untitled" }}.txt"
             createDocumentLauncher.launch(suggestedName)
         },
-        isTitleEmpty = title.isEmpty(),
-        isDescriptionEmpty = description.isEmpty(),
         body = { innerPadding ->
             Box(
                 modifier = Modifier
