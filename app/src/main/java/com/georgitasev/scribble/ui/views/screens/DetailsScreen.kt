@@ -70,9 +70,16 @@ fun DetailsScreen(
         onPopClick = { navController.popBackStack() },
         onSaveNoteClick = {
             noteId?.let { id ->
-                viewModel.updateNote(id, title, description)
+                viewModel.updateNote(
+                    id = id,
+                    title = title.ifEmpty { description },
+                    description = if (title.isEmpty()) "" else description
+                )
             } ?: run {
-                viewModel.createNote(title, description)
+                viewModel.createNote(
+                    title = title.ifEmpty { description },
+                    description = if (title.isEmpty()) "" else description
+                )
             }
             navController.popBackStack()
         },
