@@ -74,7 +74,19 @@ fun CoreScreen(
                     },
                     actions = {
                         IconButton(
-                            onClick = onSaveFileClick,
+                            onClick = {
+                                if (isFieldEmpty) {
+                                    scope.launch {
+                                        snackbarHostState
+                                            .showSnackbar(
+                                                message = "Both your title and description are empty to save this file, please be sure to add some content.",
+                                                duration = SnackbarDuration.Short
+                                            )
+                                    }
+                                } else {
+                                    onSaveFileClick()
+                                }
+                            },
                         ) {
                             Icon(
                                 painterResource(R.drawable.save_file),
@@ -92,7 +104,7 @@ fun CoreScreen(
                                     scope.launch {
                                         snackbarHostState
                                             .showSnackbar(
-                                                message = "Your both title and description are empty, please fill them with content.",
+                                                message = "Both your title and description are empty, please fill them with content.",
                                                 duration = SnackbarDuration.Short
                                             )
                                     }
