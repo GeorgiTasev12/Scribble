@@ -12,14 +12,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.georgitasev.scribble.R
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,13 +37,18 @@ fun CoreScreen(
     onPopClick: () -> Unit = {},
     onFABClick: () -> Unit = {},
     onSaveNoteClick: () -> Unit = {},
-    onSaveFileClick: () -> Unit = {}
+    onSaveFileClick: () -> Unit = {},
+    isFieldEmpty: Boolean = false
 ) {
     val colors = MaterialTheme.colorScheme
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = colors.inversePrimary,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             if (hasTopBar) {
                 TopAppBar(
@@ -67,7 +78,7 @@ fun CoreScreen(
                         ) {
                             Icon(
                                 painterResource(R.drawable.save_file),
-                                contentDescription = "Save",
+                                contentDescription = "Save note",
                                 tint = colors.onPrimaryContainer,
                                 modifier = Modifier.size(
                                     width = 25.dp,
@@ -76,7 +87,19 @@ fun CoreScreen(
                             )
                         }
                         IconButton(
-                            onClick = onSaveNoteClick,
+                            onClick = {
+                                if (isFieldEmpty) {
+                                    scope.launch {
+                                        snackbarHostState
+                                            .showSnackbar(
+                                                message = "Your both title and description are empty, please fill them with content.",
+                                                duration = SnackbarDuration.Short
+                                            )
+                                    }
+                                } else {
+                                    onSaveNoteClick()
+                                }
+                            },
                         ) {
                             Icon(
                                 Icons.Default.Check,
