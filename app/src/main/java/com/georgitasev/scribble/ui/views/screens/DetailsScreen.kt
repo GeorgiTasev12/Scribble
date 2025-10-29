@@ -68,6 +68,7 @@ fun DetailsScreen(
         hasTopBar = true,
         appBarTitle = "Details Screen",
         onPopClick = { navController.popBackStack() },
+        isFieldEmpty = (title.isEmpty() && description.isEmpty()),
         onSaveNoteClick = {
             noteId?.let { id ->
                 viewModel.updateNote(
