@@ -33,3 +33,4 @@ local.properties
 /codemagic.keystore.base64
 /codemagic.keystore
 /app/codemagic.keystore.old
+/.idea/dictionaries/project.xml
